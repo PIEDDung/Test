@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My posts</title>
+    <link th:href="@{/css/layout.css}" rel="stylesheet">
+</head>
+<body>
+
+<table>
+<thead>
+<tr>
+    <th>
+        <a th:href="@{'/admin/posts/pageNo=' + ${currentPage} + '?sortField=title&sortDirection='
+        + ${reserveSortDir}}">Title</a>
+    </th>
+    <th>Image</th>
+    <th>Category</th>
+    <th>Approve</th>
+    <th><a th:href="@{'/admin/posts/pageNo=' + ${currentPage} + '?sortField=createdDate&sortDirection='
+        + ${reserveSortDir}}">Date</a>
+    </th>
+
+</tr>
+</thead>
+
+<tbody>
+<tr th:each="post :${posts}">
+    <!--    <img class="img-fluid rounded-3 mb-3" th:src="@{${post.PhotosImagePath}}" alt=""/>-->
+    <td><a  th:text="${post.title}">Title</a></td>
+    <td><img class="img-fluid rounded-3 mb-3" th:src="${post.PhotosImagePath}" alt=""/></td>
+    <td th:text="${post.categoryName}"></td>
+    <td> <a th:href="@{/admin/{postId}/accept(postId=${post.id})}">Accept</a>
+     <a th:href="@{/admin/{postId}/decline(postId=${post.id})}">Cancel</a></td>
+    <td th:text="${post.createdDate}"></td>
+</tr>
+</tbody>
+</table>
+
+<div th:if="${totalPages > 1}">
+    <div class="row col-sm-10">
+<!--        <div class="col-sm-2">-->
+<!--            Total Rows : [[${totalPosts}]]-->
+<!--        </div>-->
+        <div class="col-sm-1">
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/admin/posts/pageNo=' + ${i} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">[[${i}]]</a>
+                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;</span>
+
+        </div>
+        <div class="col-sm-1">
+            <a th:if="${currentPage > 1}" th:href="@{'/admin/posts/pageNo=' + ${currentPage - 1} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">Back</a>
+            <span th:unless="${currentPage > 1}">Back</span>
+        </div>
+
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/posts/pageNo=' + ${currentPage + 1} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

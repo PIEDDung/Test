@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My posts</title>
+    <link th:href="@{/css/layout.css}" rel="stylesheet">
+</head>
+<body>
+<div th:text="${account.username}"></div>
+    <div th:each="role : ${account.roles}">
+        <p th:text="${role.roleName}"></p>
+    </div>
+    <p th:if="${account.statusId}" th:text="'Active'"></p>
+    <p th:unless="${account.statusId}" th:text="'Inactive'"></p>
+        <div th:if="${account.authenticationProvider == null}">
+            <p th:if="${account.gender}" th:text="'Male'"></p>
+            <p th:unless="${account.gender}" th:text="'Female'"></p>
+        </div>
+<div th:if="${account.firstName != null}">
+    <div th:text="${account.firstName}">First Name</div>
+    <div th:unless="${account.firstName}" th:text=""></div>
+</div>
+<div th:if="${account.lastName != null}">
+    <div th:text="${account.lastName}">Last Name</div>
+    <div th:unless="${account.lastName}" th:text=""></div>
+</div>
+<div th:text="${account.createdDate}"></div>
+<div th:if="${account.authenticationProvider != null}">
+    <p>Not set gender yet</p>
+</div>
+
+
+<table>
+    <thead>
+    <tr>
+        <th>
+            <a th:href="@{'/admin/posts/pageNo=' + ${currentPage} + '?sortField=title&sortDirection='
+        + ${reserveSortDir}}">Title</a>
+        </th>
+        <th>Image</th>
+        <th>Category</th>
+        <th>Approve</th>
+        <th><a th:href="@{'/admin/posts/pageNo=' + ${currentPage} + '?sortField=createdDate&sortDirection='
+        + ${reserveSortDir}}">Date</a>
+        </th>
+
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="post :${posts}">
+        <!--    <img class="img-fluid rounded-3 mb-3" th:src="@{${post.PhotosImagePath}}" alt=""/>-->
+        <td><a  th:text="${post.title}">Title</a></td>
+        <td><img class="img-fluid rounded-3 mb-3" th:src="${post.PhotosImagePath}" alt=""/></td>
+        <td th:text="${post.categoryName}"></td>
+        <td> <a th:href="@{/admin/member/{postId}/accept(postId=${post.id},accountId=${account.id})}">Accept</a>
+            <a th:href="@{/admin/member/{postId}/decline(postId=${post.id},accountId=${account.id})}">Cancel</a></td>
+        <td th:text="${post.createdDate}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div th:if="${totalPages > 1}">
+    <div class="row col-sm-10">
+        <!--        <div class="col-sm-2">-->
+        <!--            Total Rows : [[${totalPosts}]]-->
+        <!--        </div>-->
+        <div class="col-sm-1">
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                <a th:if="${currentPage != i}" th:href="@{'/admin/member/accountId' + ${account.id} + '/detail/posts/pageNo=' + ${i} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">[[${i}]]</a>
+                <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;</span>
+
+        </div>
+        <div class="col-sm-1">
+            <a th:if="${currentPage > 1}" th:href="@{'/admin/member/accountId' + ${account.id} + '/detail/posts/pageNo=' + ${currentPage - 1} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">Back</a>
+            <span th:unless="${currentPage > 1}">Back</span>
+        </div>
+
+        <div class="col-sm-1">
+            <a th:if="${currentPage < totalPages}" th:href="@{'/admin/member/accountId' + ${account.id} + '/detail/posts/pageNo=' + ${currentPage + 1} +'?sortField=' +
+                ${sortField} + '&sortDirection=' + ${sortDirection}}">Next</a>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>New Post</title>
+</head>
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0 justify-content-center align-items-center"> <!-- Thêm lớp justify-content-center và align-items-center -->
+    <section layout:fragment="body" class="py-5">
+
+        <div class="container">
+            <form role="form" enctype="multipart/form-data" method="post" th:action="@{/posts/create}" th:object="${post}">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="title">Title</label>
+                        <input type="text"
+                               class="form-control"
+                               id="title"
+                               name="title"
+                               placeholder="Title"
+                               th:field="*{title}">
+
+                        <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
+
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="description">Description</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="description"
+                                placeholder="Description"
+                                name="description"
+                                th:field="*{description}">
+                        <p th:if="${#fields.hasErrors('description')}" class="text-danger" th:errors="*{description}"></p>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="location">Location</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="location"
+                                placeholder="Location"
+                                name="location"
+                                th:field="*{location}">
+                        <p th:if="${#fields.hasErrors('location')}" class="text-danger" th:errors="*{location}"></p>
+                    </div>
+                </div>
+                <div class="form-group col-md-9">
+                    <label for="price">Price</label>
+                    <input
+                            type="number"
+                            class="form-control"
+                            id="price"
+                            placeholder="Price"
+                            name="price"
+                            th:field="*{price}">
+                    <p th:if="${#fields.hasErrors('price')}" class="text-danger" th:errors="*{price}"></p>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="image">Photos: </label>
+                    <input
+                            type="file"
+                            class="form-control"
+                            id="image"
+                            name="image"
+                            accept="image/png, image/jpeg, image/jpg" />
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="category">Choose a category:</label>
+                    <select name="category" id="category">
+                        <th:block th:each="category : ${categories}">
+                            <option th:value="${category.id}" th:text="${category.name}"></option>
+                        </th:block>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>-->
+</html>
+
+

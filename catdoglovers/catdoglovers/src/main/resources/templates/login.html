@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Register</title>
+</head>
+
+<body class="d-flex flex-column h-100">
+<main class="flex-shrink-0">
+    <section layout:fragment="body" >
+        <style>
+            .main {
+padding: 0px 10px;
+}
+
+@media screen and (max-width: 450px) {
+.login-form{
+margin-top: 10%;
+}
+.register-form{
+margin-top: 10%;
+}
+}
+@media screen and (min-width: 768px){
+.main{
+margin-left: 30%;
+}
+
+.sidenav{
+width: 40%;
+position: fixed;
+z-index: 1;
+top: 0;
+left: 0;
+}
+}
+        </style>
+        <div class="main">
+            <div class="col-md-6 col-sm-12">
+                <div th:if="${param.error}" class="alert alert-danger">
+                    invalid username and password</div>
+                <div th:if="${param.logout}" class="alert alert-success">
+                    You have been logged out</div>
+                <div th:if="${param.success}" class="alert alert-success">
+                    Please check your mail to verify
+                </div>
+                <div class="login-form">
+                    <form method="post" role="form" th:action="@{/login}">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input
+                                    id="username"
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Username"
+                                    name="username"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control"
+                                    placeholder="Password"
+                                    name="password"
+                            >
+                        </div>
+                        <!-- 2 column grid layout for inline styling -->
+                        <div class="row mb-4">
+                            <div class="col d-flex justify-content-center">
+                                <!-- Checkbox -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
+                                    <label class="form-check-label" for="form2Example31"> Remember me </label>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <!-- Simple link -->
+                                <a href="#!">Forgot password?</a>
+                            </div>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+
+                        <!-- Register buttons -->
+                        <a th:href="@{/register}" class="btn btn-black">Don't have an account? Register here.</a>
+                        <p>or sign up with:</p>
+                        <a th:href="@{/oauth2/authorization/google}" class="btn btn-link btn-floating mx-1">
+                            Login with Google
+                        </a>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
